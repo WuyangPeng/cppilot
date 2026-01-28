@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 4.1)
 
 project(cppilot)
 
+if(EXISTS "${celeritas_common_dir}")
+    file(COPY ${celeritas_common_dir}/ DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
