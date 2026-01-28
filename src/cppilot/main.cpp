@@ -2,7 +2,8 @@
 #include <iostream>
 #include <vector>
 
-int main() {
+int test()
+{
     // 1. 系统初始化
     llama_backend_init();
 
@@ -10,7 +11,8 @@ int main() {
     llama_model_params model_params = llama_model_default_params();
     llama_model* model = llama_model_load_from_file("F:/cppilot/models/qwen2.5-coder-7b-instruct-q6_k.gguf", model_params);
 
-    if (!model) {
+    if (!model)
+    {
         std::cerr << "加载模型失败！" << std::endl;
         return 1;
     }

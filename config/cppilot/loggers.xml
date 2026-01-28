@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<loggers>
+    <global_level>trace</global_level>
+    <console_level>trace</console_level>
+    <logger name="default_logger">
+        <level>trace</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>player_server</channel_name>
+        <log_file_name>player_server</log_file_name>
+        <rotation_size>10</rotation_size>
+    </logger>
+    <logger name="cppilot_logger">
+        <level>trace</level>
+        <console_enabled>true</console_enabled>
+        <channel_name>cppilot</channel_name>
+        <log_file_name>cppilot</log_file_name>
+        <rotation_size>50</rotation_size>
+    </logger>
+</loggers>

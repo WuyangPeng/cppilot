@@ -137,12 +137,33 @@ message("celeritas_common_dir: $ENV{celeritas_common_dir}")
 
 if(EXISTS "$ENV{celeritas_common_dir}")
 
-    file(COPY $ENV{celeritas_common_dir}/common_constant.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/)
-    file(COPY $ENV{celeritas_common_dir}/common_fwd.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/)
-    file(COPY $ENV{celeritas_common_dir}/logging/ DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/logging)
-    file(COPY $ENV{celeritas_common_dir}/core/enum_cast.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/core)
-    file(COPY $ENV{celeritas_common_dir}/core/enum_operator.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/core)
-    file(COPY $ENV{celeritas_common_dir}/core/noexcept_safe_call_and_log.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/core)
+    file(GLOB common_files
+            "$ENV{celeritas_common_dir}/common_constant.h"
+            "$ENV{celeritas_common_dir}/common_fwd.h"
+    )
+    if(common_files)
+        file(COPY ${common_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/)
+    endif()
+
+    file(COPY "$ENV{celeritas_common_dir}/logging/" DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/logging)
+
+    file(GLOB core_files
+            "$ENV{celeritas_common_dir}/core/enum_cast.h"
+            "$ENV{celeritas_common_dir}/core/enum_operator.h"
+            "$ENV{celeritas_common_dir}/core/noexcept_safe_call_and_log.h"
+            "$ENV{celeritas_common_dir}/core/command_line_config.*"
+            "$ENV{celeritas_common_dir}/core/celeritas_error.*"
+    )
+    if(core_files)
+        file(COPY ${core_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/core)
+    endif()
+
+    file(GLOB framework_files
+            "$ENV{celeritas_common_dir}/framework/celeritas_main.*"
+    )
+    if(framework_files)
+        file(COPY ${framework_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/framework)
+    endif()
 
 endif()
 
