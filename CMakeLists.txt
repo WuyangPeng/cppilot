@@ -15,7 +15,6 @@ else ()
 
 endif ()
 
-
 if (MSVC)
 
     add_compile_definitions(_WIN32_WINNT=0x0A00)
@@ -133,42 +132,69 @@ else ()
 
 endif ()
 
-message("celeritas_common_dir: $ENV{celeritas_common_dir}")
+message("celeritas_common_dir: $ENV{celeritas_dir}")
 
-if(EXISTS "$ENV{celeritas_common_dir}")
+if (EXISTS "$ENV{celeritas_dir}")
 
     file(GLOB common_files
-            "$ENV{celeritas_common_dir}/common_constant.h"
-            "$ENV{celeritas_common_dir}/common_fwd.h"
+            "$ENV{celeritas_dir}/common/common_constant.h"
+            "$ENV{celeritas_dir}/common/common_fwd.h"
     )
-    if(common_files)
+    if (common_files)
         file(COPY ${common_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/)
-    endif()
+    endif ()
 
-    file(COPY "$ENV{celeritas_common_dir}/logging/" DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/logging)
+    file(COPY "$ENV{celeritas_dir}/common/logging/" DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/logging)
 
     file(GLOB core_files
-            "$ENV{celeritas_common_dir}/core/enum_cast.h"
-            "$ENV{celeritas_common_dir}/core/enum_operator.h"
-            "$ENV{celeritas_common_dir}/core/noexcept_safe_call_and_log.h"
-            "$ENV{celeritas_common_dir}/core/command_line_config.*"
-            "$ENV{celeritas_common_dir}/core/celeritas_error.*"
+            "$ENV{celeritas_dir}/common/core/enum_cast.h"
+            "$ENV{celeritas_dir}/common/core/enum_operator.h"
+            "$ENV{celeritas_dir}/common/core/noexcept_safe_call_and_log.h"
+            "$ENV{celeritas_dir}/common/core/command_line_config.*"
+            "$ENV{celeritas_dir}/common/core/celeritas_error.*"
     )
-    if(core_files)
+    if (core_files)
         file(COPY ${core_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/core)
-    endif()
+    endif ()
 
     file(GLOB framework_files
-            "$ENV{celeritas_common_dir}/framework/celeritas_main.*"
+            "$ENV{celeritas_dir}/common/framework/celeritas_main.*"
     )
-    if(framework_files)
+    if (framework_files)
         file(COPY ${framework_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/framework)
-    endif()
+    endif ()
 
-endif()
+    file(GLOB config_files
+            "$ENV{celeritas_dir}/config/config_constant.h"
+            "$ENV{celeritas_dir}/config/config_fwd.h"
+    )
+    if (config_files)
+        file(COPY ${config_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/config/)
+    endif ()
 
+    file(GLOB local_files
+            "$ENV{celeritas_dir}/config/local/logger_level_config.*"
+            "$ENV{celeritas_dir}/config/local/logger_config.*"
+    )
+    if (local_files)
+        file(COPY ${local_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/config/local/)
+    endif ()
+
+    file(GLOB aggregate_files
+            "$ENV{celeritas_dir}/config/aggregate/detail/logger_config_reader.*"
+    )
+    if (local_files)
+        file(COPY ${aggregate_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/config/aggregate/detail/)
+    endif ()
+
+endif ()
+
+# celeritas静态库
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/config)
+
+# 静态库
+add_subdirectory(cmake/core)
 add_subdirectory(cmake/model)
 add_subdirectory(cmake/generate)
 add_subdirectory(cmake/tokenizer)
@@ -179,13 +205,13 @@ target_link_libraries(cppilot_lib INTERFACE
         tokenizer
         generate
         model
+        core
         config
         common
         llama_lib
         boost)
 
 add_subdirectory(cmake/cppilot)
-
 
 # 安装规则
 install(TARGETS
@@ -197,7 +223,6 @@ set(APP_RUNTIME_RPATH "$ORIGIN/lib")
 set_target_properties(
         cppilot
         PROPERTIES INSTALL_RPATH "${APP_RUNTIME_RPATH}")
-
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config/"
         DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/bin/${BUILD_TYPE_DIRECTORY}/config/"
