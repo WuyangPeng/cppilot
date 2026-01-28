@@ -20,7 +20,6 @@ if (MSVC)
 
     add_compile_definitions(_WIN32_WINNT=0x0A00)
 
-
     set(PREFIX msvc_)
     set(SUFFIX _${BUILD_TYPE_DIRECTORY})
 
@@ -148,6 +147,7 @@ if(EXISTS "$ENV{celeritas_common_dir}")
 endif()
 
 add_subdirectory(cmake/common)
+add_subdirectory(cmake/config)
 add_subdirectory(cmake/model)
 add_subdirectory(cmake/generate)
 add_subdirectory(cmake/tokenizer)
@@ -158,6 +158,7 @@ target_link_libraries(cppilot_lib INTERFACE
         tokenizer
         generate
         model
+        config
         common
         llama_lib
         boost)
