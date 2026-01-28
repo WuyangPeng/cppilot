@@ -1,0 +1,7 @@
+!*.dll
+!*.lib
+!*.exe
+!*.so
+!*.a
+
+llama.cpp_debug/lib/*.a
