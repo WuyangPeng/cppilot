@@ -164,6 +164,14 @@ if (EXISTS "$ENV{celeritas_dir}")
         file(COPY ${framework_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/framework)
     endif ()
 
+    file(GLOB system_files
+            "$ENV{celeritas_dir}/common/system/crash.*"
+            "$ENV{celeritas_dir}/common/system/daemon.*"
+    )
+    if (system_files)
+        file(COPY ${system_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/system/)
+    endif ()
+
     file(GLOB config_files
             "$ENV{celeritas_dir}/config/config_constant.h"
             "$ENV{celeritas_dir}/config/config_fwd.h"
@@ -185,14 +193,6 @@ if (EXISTS "$ENV{celeritas_dir}")
     )
     if (local_files)
         file(COPY ${aggregate_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/config/aggregate/detail/)
-    endif ()
-
-    file(GLOB system_files
-            "$ENV{celeritas_dir}/initializer/system/crash.*"
-            "$ENV{celeritas_dir}/initializer/system/daemon.*"
-    )
-    if (local_files)
-        file(COPY ${system_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/system/)
     endif ()
 
 endif ()
