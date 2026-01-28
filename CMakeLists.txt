@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 4.1)
 
 project(cppilot)
 
-if(EXISTS "${celeritas_common_dir}")
-    file(COPY ${celeritas_common_dir}/ DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common)
-endif()
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -63,7 +59,6 @@ include_directories(
 )
 
 add_link_options("-fopenmp")
-
 
 # 包含boost库
 add_library(boost INTERFACE)
@@ -138,6 +133,19 @@ else ()
             mtmd)
 
 endif ()
+
+message("celeritas_common_dir: $ENV{celeritas_common_dir}")
+
+if(EXISTS "$ENV{celeritas_common_dir}")
+
+    file(COPY $ENV{celeritas_common_dir}/common_constant.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/)
+    file(COPY $ENV{celeritas_common_dir}/common_fwd.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/)
+    file(COPY $ENV{celeritas_common_dir}/logging/ DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/logging)
+    file(COPY $ENV{celeritas_common_dir}/core/enum_cast.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/core)
+    file(COPY $ENV{celeritas_common_dir}/core/enum_operator.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/core)
+    file(COPY $ENV{celeritas_common_dir}/core/noexcept_safe_call_and_log.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/core)
+
+endif()
 
 add_subdirectory(cmake/common)
 add_subdirectory(cmake/model)
