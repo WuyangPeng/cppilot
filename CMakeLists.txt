@@ -187,6 +187,14 @@ if (EXISTS "$ENV{celeritas_dir}")
         file(COPY ${aggregate_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/config/aggregate/detail/)
     endif ()
 
+    file(GLOB system_files
+            "$ENV{celeritas_dir}/initializer/system/crash.*"
+            "$ENV{celeritas_dir}/initializer/system/daemon.*"
+    )
+    if (local_files)
+        file(COPY ${system_files} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/src/common/system/)
+    endif ()
+
 endif ()
 
 # celeritas静态库
