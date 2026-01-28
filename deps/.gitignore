@@ -4,4 +4,4 @@
 !*.so
 !*.a
 
-llama.cpp_mingw_debug/lib/*.a
+mingw_llama.cpp_debug/lib/*.a
